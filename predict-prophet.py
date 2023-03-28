@@ -58,8 +58,23 @@ def predict_model(model, df, floor, cap, start_date='2023-01-01', end_date='2027
     future = pd.concat([df[['ds']], pd.DataFrame(pd.date_range(start_date, end_date, freq = 'MS'), columns = ['ds'])])
     future['floor'] = floor
     future['cap'] = cap
-    prediction = model.predict(future)
-    return prediction
+    return model.predict(future)
+
+def save_prediction(prediction, city):
+    result_dir = f'/Users/master/dev/PythonPr/fbProphet/result/{city}'
+    try:
+        if not os.path.exists(result_dir):
+            os.makedirs(result_dir)
+    except OSError:
+        print('Error: Failed to create directory.')
+
+    prediction.to_excel(f'{result_dir}/full_result.xlsx')
+    y_only = prediction[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].copy()
+    y_only.to_excel(f'{result_dir}/y_only.xlsx')
+    y_only['year'] = [i.year for i in y_only['ds']]
+    y_only['month'] = [i.month for i in y_only['ds']]
+    prediction_yearly = pd.pivot_table(y_only, index = 'year', values = ['yhat'], aggfunc = 'sum')
+    prediction_yearly.to_excel(f'{result_dir}/yearly.xlsx')
 
 def main():
     p = argparse.ArgumentParser()
@@ -76,6 +91,7 @@ def main():
     model, df = train_model(df, floor, cap, exceptions)
     print('- start prediction')
     prediction = predict_model(model, df, floor, cap, start_date='2023-01-01', end_date='2027-12-31')
+    save_prediction(prediction, args.region)
     return
 
 if __name__ == '__main__': main()
