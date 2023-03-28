@@ -5,6 +5,9 @@ from prophet import Prophet
 from datetime import datetime
 import argparse
 
+start_date='2023-01-01'
+end_date='2028-12-31'
+
 def get_file(region):
     dir = '/Users/master/dev/PythonPr/fbProphet/raw_data'
     fileName = f'{region}.xlsx'
@@ -54,7 +57,7 @@ def train_model(df, floor, cap, exceptions):
     model.fit(df)
     return model, df
 
-def predict_model(model, df, floor, cap, start_date='2023-01-01', end_date='2027-12-01'):
+def predict_model(model, df, floor, cap, start_date, end_date):
     future = pd.concat([df[['ds']], pd.DataFrame(pd.date_range(start_date, end_date, freq = 'MS'), columns = ['ds'])])
     future['floor'] = floor
     future['cap'] = cap
@@ -90,7 +93,7 @@ def main():
     print('- start training')
     model, df = train_model(df, floor, cap, exceptions)
     print('- start prediction')
-    prediction = predict_model(model, df, floor, cap, start_date='2023-01-01', end_date='2027-12-31')
+    prediction = predict_model(model, df, floor, cap, start_date, end_date)
     save_prediction(prediction, args.region)
     return
 
