@@ -5,9 +5,11 @@ from prophet import Prophet
 from datetime import datetime
 import argparse
 
+# 시작 날짜 & 예측 끝 날짜
 start_date='2023-01-01'
 end_date='2028-12-31'
 
+# 지역명으로 파일 가져온다.
 def get_file(region):
     dir = '/Users/master/dev/PythonPr/fbProphet/raw_data'
     fileName = f'{region}.xlsx'
