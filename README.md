@@ -13,11 +13,11 @@
 - 
 ## Files
 - .venv: 사용된 가상환경
-- /raw_data: 한국관광데이터랩에서 다운받은 엑셀 파일을 이곳에 저장 (하나로 합치는 수작업 필요)
+- /raw_data/{도시이름}: 한국관광데이터랩에서 다운받은 엑셀 파일을 이곳에 저장<br>폴더명을 도시이름으로 지정할 것
 - /result: 예측 결과가 저장
-- predict-prophet.py: 실행 파일
+- run.py: 실행 파일
 - requirements.txt: 설치 파일 목록
 ## Usage
-파이썬 파일 (predict-prophet.py)를 실행하고, 도시명을 지정해줌
+파이썬 파일 (run.py)를 실행하고, 도시명을 지정해줌
 ### Usage examples
-    `python3 predict-prophet.py -r <도시명>`
+    `python3 run.py -r <도시명(폴더명)>`
